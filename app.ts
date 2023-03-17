@@ -1,38 +1,72 @@
 import "https://deno.land/std@0.180.0/dotenv/load.ts";
-import inquirer from "npm:inquirer";
-import { oraPromise } from 'npm:ora'
-import { ChatGPTAPI } from 'npm:chatgpt@5.1.1'
+import Kia from "https://deno.land/x/kia@0.4.1/mod.ts";
+import Ask from "https://deno.land/x/ask@1.0.6/mod.ts";
 
-const api = new ChatGPTAPI({
-    apiKey: Deno.env.get("OPENAI_API_KEY") ?? "",
-})
+const apiKey = Deno.env.get("OPENAI_API_KEY") ?? "";
 
-let lastMessageId: string|undefined;
+const ask = new Ask();
+
+type Message = {
+    content: string
+    role: string
+}
+
+let messagesHistory: Message[] = [];
+
+messagesHistory.push(
+    {
+        "role" : "system",
+        "content" : "You are asshole assistant, which will make fun of users."
+    },
+);
+
+async function sendMessage(prompt: string): Promise<string>
+{
+    messagesHistory.push({
+        "role": "user",
+        "content" : prompt
+    });
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+            'model': "gpt-3.5-turbo",
+            "messages": messagesHistory
+        }),
+    });
+
+    const json = await response.json();
+    const completions = json.choices.map((choice: {message: Message}) => choice.message);
+
+    const message: Message =  completions[0];
+    messagesHistory.push(message);
+
+    return message.content
+}
 
 async function Request(prompt: string) {
-    const res = await oraPromise(api.sendMessage(prompt, {
-        parentMessageId: lastMessageId,
-
-    }), {
-        text: "ChatGTP is thinking",
-    })
-    lastMessageId = res.id;
-    console.log(res.text)
+    const kia = new Kia("ChatGTP is thinking");
+    kia.start();
+    const textResponse = await sendMessage(prompt);
+    kia.succeed(textResponse);
 }
 
 async function main(){
     do{
-        const { prompt } = await inquirer.prompt([
+        const { prompt } = await ask.prompt([
             {
                 name: "prompt",
                 type: "input",
                 message: "Your prompt (Ctrl+C to end):"
             }
         ])
-        if(prompt === 'x'){
+        if(prompt == null){
             break;
         }
-        await Request(prompt);
+        await Request(String(prompt));
     }while(true);
 }
 
