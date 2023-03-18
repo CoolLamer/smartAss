@@ -3,8 +3,10 @@ import Kia from "https://deno.land/x/kia@0.4.1/mod.ts";
 import Ask from "https://deno.land/x/ask@1.0.6/mod.ts";
 
 const apiKey = Deno.env.get("OPENAI_API_KEY") ?? null;
+
 if(apiKey === null){
     console.error("You have to set your api key to env variable OPENAI_API_KEY");
+    Deno.exit(1);
 }
 
 const ask = new Ask();
@@ -52,7 +54,7 @@ async function sendMessage(prompt: string): Promise<string>
 }
 
 async function Request(prompt: string) {
-    const kia = new Kia("ChatGTP is thinking");
+    const kia = new Kia("SmartAss is thinking");
     kia.start();
     const textResponse = await sendMessage(prompt);
     kia.succeed(textResponse);

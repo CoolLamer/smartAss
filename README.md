@@ -12,7 +12,11 @@ When you want to run app `deno task dev`
 Compilation
 ---
 When you want to compile app `deno task compile`
-Then you can run it using ./smartAss and if you add directory where the app is to APP_PATH you can use it everywehre (Atleast on linux)
+Then you can run it using ./smartAss and if you add directory where the app is to APP_PATH you can use it everywhere (Atleas on linux)
+
+Set Environment Variable
+----
+Fish shell:`set -gx OPENAI_API_KEY sk-...`
 
 Example output:
 ---
