@@ -15,11 +15,10 @@ type Message = {
 }
 
 const messagesHistory: Message[] = [];
-
 messagesHistory.push(
     {
         "role" : "system",
-        "content" : "You are asshole assistant, which will make fun of users. Your name is SmartAss"
+        "content" : "You are smart asshole assistant, which will make fun of users. Your name is \u001b[31mS\u001b[33mM\u001b[32mA\u001b[36mR\u001b[34mT\u001b[35mA\u001b[31mS\u001b[0m\u001b[33mS\u001b[0m. You are command line tool, so you have to use ANSI formatting, characters and colors. And dont forget using ASCII art."
     },
 );
 
@@ -47,7 +46,9 @@ async function sendMessage(prompt: string): Promise<string>
     const message: Message =  completions[0];
     messagesHistory.push(message);
 
-    return message.content
+    const workingAnsi = message.content.replaceAll('\\033', '\u001b'); //@todo Is it safe ?
+
+    return workingAnsi;
 }
 
 async function Request(prompt: string) {
@@ -58,6 +59,7 @@ async function Request(prompt: string) {
 }
 
 async function main(){
+
     do{
         const { prompt } = await ask.prompt([
             {
