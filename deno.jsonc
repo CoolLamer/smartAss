@@ -1,6 +1,6 @@
 {
   "tasks": {
     "dev": "deno run --allow-env --allow-read --allow-net --allow-run app.ts",
-    "compile" : "deno compile --allow-env --allow-read --allow-net --allow-run app.ts"
+    "compile" : "deno compile --allow-env --allow-read --allow-net --allow-run -o smartAss app.ts"
   }
 }

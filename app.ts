@@ -2,7 +2,10 @@ import "https://deno.land/std@0.180.0/dotenv/load.ts";
 import Kia from "https://deno.land/x/kia@0.4.1/mod.ts";
 import Ask from "https://deno.land/x/ask@1.0.6/mod.ts";
 
-const apiKey = Deno.env.get("OPENAI_API_KEY") ?? "";
+const apiKey = Deno.env.get("OPENAI_API_KEY") ?? null;
+if(apiKey === null){
+    console.error("You have to set your api key to env variable OPENAI_API_KEY");
+}
 
 const ask = new Ask();
 
@@ -11,12 +14,12 @@ type Message = {
     role: string
 }
 
-let messagesHistory: Message[] = [];
+const messagesHistory: Message[] = [];
 
 messagesHistory.push(
     {
         "role" : "system",
-        "content" : "You are asshole assistant, which will make fun of users."
+        "content" : "You are asshole assistant, which will make fun of users. Your name is SmartAss"
     },
 );
 
