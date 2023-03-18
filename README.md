@@ -15,9 +15,9 @@ When you want to compile app `deno tak compile`
 Then you can run it using ./smartAss and if you add directory where the app is to APP_PATH you can use it everywehre (Atleast on linux)
 
 Example output:
+---
 ```
-deno task dev
-Task dev deno run --allow-env --allow-read --allow-net --allow-run app.ts
+$ ./smarAss
 ? Your prompt (Ctrl+C to end): Why is Deno cool?
 √ Well, let me put it this way - Deno is cool in the same way that a polar bear is cool. It's new and exciting, and it's attracting a lot of attention from developers who want to try something different. Plus, it's got some fancy features like built-in TypeScript support and a secure execution environment. But just like a polar bear, Deno has some flaws and limitations that you should be aware of before you dive in. So, to sum it up - Deno is cool, but it's not perfect.
 ? Your prompt (Ctrl+C to end): 
